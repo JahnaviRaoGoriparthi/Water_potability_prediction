@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATER POTABILITY TESTER</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #2c3e50; /* Dark blue background */
+            color: #283747; /* White text */
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            background-color: #F5F5F5; /* Light blue form background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            color: #283747; /* Highlighted label color */
+        }
+        input[type="number"] {
+            border: 2px solid #16a085; /* Highlighted input border */
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            transition: border-color 0.2s ease-in-out;
+        }
+        input[type="number"]:focus {
+            border-color: #2980b9; /* Darker border color on focus */
+            outline: none;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #007bff; /* Dark blue button background */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+        button[type="submit"]:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+        #predictionResult {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            display: none; /* Initially hidden */
+            transition: opacity 0.5s ease-in-out;
+            background-color: #2ecc71; /* Light green background for result */
+            color: #27ae60; /* Dark green text color */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #predictionResult.show {
+            display: block;
+        }
+        #predictionResult.error {
+            color: #e74c3c; /* Red text color for error */
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px; /* Smaller width for modal */
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .result-image {
+            max-width: 100%;
+            max-height: 250px; /* Limit image height */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4 text-center">WATER POTABILITY TESTER</h2>
+        <form id="predictionForm">
+            <div class="form-group">
+                <label for="ph">pH (7-14):</label>
+                <input type="number" step="0.0000000000000001" class="form-control" id="ph" name="ph" min="7" max="14" required>
+            </div>
+            <div class="form-group">
+                <label for="Hardness">Hardness:</label>
+                <input type="number" step="0.0000000000000001" class="form-control" id="Hardness" name="Hardness" required>
+            </div>
+            <div class="form-group">
+                <label for="Solids">Solids:</label>
+                <input type="number" step="0.0000000000000001" class="form-control" id="Solids" name="Solids" required>
+            </div>
+            <div class="form-group">
+                <label for="Chloramines">Chloramines:</label>
+                <input type="number" step="0.0000000000000001" class="form-control" id="Chloramines" name="Chloramines" required>
+            </div>
+            <div class="form-group">
+                <label for="Sulfate">Sulfate:</label>
+                <input type="number" step="0.0000000000000001" class="form-control" id="Sulfate" name="Sulfate" required>
+            </div>
+            <div class="form-group">
+                <label for="Organic_carbon">Organic Carbon:</label>
+                <input type="number" step="0.0000000000000001" class="form-control" id="Organic_carbon" name="Organic_carbon" required>
+            </div>
+            <div class="form-group">
+                <label for="Turbidity">Turbidity:</label>
+                <input type="number" step="0.0000000000000001" class="form-control" id="Turbidity" name="Turbidity" required>
+            </div>
+            <div class="form-group">
+                <label for="Conductivity">Conductivity:</label>
+                <input type="number" step="0.00000000000000011" class="form-control" id="Conductivity" name="Conductivity" required>
+            </div>
+            <div class="form-group">
+                <label for="Trihalomethanes">Trihalomethanes:</label>
+                <input type="number" step="0.0000000000000001" class="form-control" id="Trihalomethanes" name="Trihalomethanes" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+        <div id="predictionResult" class="mt-4"></div>
+    </div>
+
+    <!-- Modal for prediction result -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="resultImage" src="" alt="Result Image" class="result-image">
+            <p id="predictionText" class="mt-3"></p>
+            <button id="okButton" class="btn btn-primary mt-3">OK</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        // Function to handle form submission and prediction
+        $('#predictionForm').submit(function(event) {
+            event.preventDefault(); // Prevent the form from submitting traditionally
+    
+            // Collect input data from form
+            var formData = {
+                'ph': parseFloat($('#ph').val()),
+                'Hardness': parseFloat($('#Hardness').val()),
+                'Solids': parseFloat($('#Solids').val()),
+                'Chloramines': parseFloat($('#Chloramines').val()),
+                'Sulfate': parseFloat($('#Sulfate').val()),
+                'Organic_carbon': parseFloat($('#Organic_carbon').val()),
+                'Turbidity': parseFloat($('#Turbidity').val()),
+                'Conductivity': parseFloat($('#Conductivity').val()),
+                'Trihalomethanes': parseFloat($('#Trihalomethanes').val())
+            };
+    
+            // Send POST request to Flask endpoint
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                dataType: 'json',
+                success: function(response) {
+                    var prediction = response.predictions[0];
+                    var imageUrl = prediction === 1 ? 'static/img1.jpeg' : 'static/img2.webp';
+                    
+                    $('#resultImage').attr('src', imageUrl);
+                    $('#predictionText').text('Prediction: ' + (prediction === 1 ? 'Potable' : 'Not Potable'));
+                    
+                    $('#resultModal').css('display', 'block');
+                },
+                error: function() {
+                    $('#predictionResult').html('<h5>Prediction failed. Please try again.</h5>');
+                    $('#predictionResult').addClass('show error'); // Show and style error message
+                }
+            });
+        });
+    
+        // When the user clicks on <span> (x), close the modal
+        $('.close').click(function() {
+            $('#resultModal').css('display', 'none');
+        });
+    
+        // When the user clicks on the OK button, close the modal
+        $('#okButton').click(function() {
+            $('#resultModal').css('display', 'none');
+        });
+    </script>
+</body>
+</html>
